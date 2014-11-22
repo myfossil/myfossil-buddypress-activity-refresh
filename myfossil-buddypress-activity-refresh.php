@@ -1,11 +1,10 @@
 <?php
 /*
 Plugin Name: myFOSSIL BuddyPress Activity Refresh
-PLugin URI: http://buddypress.org/community/groups/myfossil-buddypress-activity-refresh/
-Description: This plugin automatically refresh the BuddyPress Activity stream, it is a fork of the RS BuddyPress Activity Refresh plugin that works with newer versions of BuddyPress.
-Author: Florian Koenig-Heidinger, Brandon Wood
+Description: This plugin automatically refreshes the BuddyPress Activity stream.
+Author: myFOSSIL
 Tags: buddypress
-Author URI: http://buddypress.org/community/members/Spitzohr/
+Version: 0.0.2
 */
 
 class myFOSSILBuddypressActivityRefresh
