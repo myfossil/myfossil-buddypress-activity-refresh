@@ -21,5 +21,4 @@ Example:
 
 ## History
 
-This is a (fork of spitzohr's RS BuddyPress Activity Refresh
-plugin)[https://wordpress.org/plugins/rs-buddypress-activity-refresh].
+This is a fork of spitzohr's [RS BuddyPress Activity Refresh plugin](https://wordpress.org/plugins/rs-buddypress-activity-refresh).
