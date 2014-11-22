@@ -299,10 +299,9 @@ class myFOSSILBuddypressActivityRefresh
      */
     public function addAdminMenu()
     {
-        add_submenu_page(
-            'bp-general-settings',
-            'Activity Refresh',
-            'Activity Refresh',
+        add_options_page(
+            'BuddyPress Activity Refresh',
+            'myFOSSIL BuddyPress Activity Refresh',
             'manage_options',
             basename( __FILE__ ),
             array( $this, 'printAdminPage' )
@@ -350,7 +349,7 @@ class myFOSSILBuddypressActivityRefresh
 					</select></p>
 
 					<div class="submit">
-						<input type="submit" name="update_myfossilbpactivityrefresh" value="<?php _e( 'Update Settings', 'myfossil-buddypress-activity-refresh' ); ?>" />
+						<button class="button" type="submit" name="update_myfossilbpactivityrefresh"><?php _e( 'Update Settings', 'myfossil-buddypress-activity-refresh' ); ?></button>
 					</div>
 				</form>
  			</div>
