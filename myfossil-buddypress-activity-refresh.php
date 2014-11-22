@@ -1,12 +1,4 @@
 <?php
-/**
- * myfossil-buddypress-activity-refresh.php
- *
- * @author Brandon Wood <bwood@atmoapps.com>
- * @package myFOSSIL
- */
-
-
 /*
 Plugin Name: myFOSSIL BuddyPress Activity Refresh
 PLugin URI: http://buddypress.org/community/groups/myfossil-buddypress-activity-refresh/
@@ -16,9 +8,6 @@ Tags: buddypress
 Author URI: http://buddypress.org/community/members/Spitzohr/
 */
 
-/**
- * class myFOSSILBuddypressActivityRefresh
- */
 class myFOSSILBuddypressActivityRefresh
 {
 
@@ -96,8 +85,7 @@ class myFOSSILBuddypressActivityRefresh
     protected $options = null;
 
     /**
-     * Constructor
-     * Do nothing
+     * Constructor, does nothing.
      *
      * @access public
      */
@@ -117,8 +105,6 @@ class myFOSSILBuddypressActivityRefresh
         $this->plugin_dir = WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . $this->plugin_folder;
         $this->plugin_file = $this->plugin_folder . '/' . basename( __FILE__ );
 
-        load_plugin_textdomain( 'myfossil-buddypress-activity-refresh', null, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
-
         // load Options
         $this->getOptions();
 
@@ -126,28 +112,19 @@ class myFOSSILBuddypressActivityRefresh
         if ( $this->options['refreshRate'] > 0 ) {
             // adding the refresh javascript file
             wp_enqueue_script( 'jquery-timeago-js', $this->plugin_url . '/js/jquery.timeago.js', array( 'jquery' ) );
-            $language = get_bloginfo( 'language' );
-            $translationFile = 'jquery.timeago.' . $language . '.js';
-            if ( file_exists( $this->plugin_dir . DIRECTORY_SEPARATOR . 'js' . DIRECTORY_SEPARATOR . $translationFile ) ) {
-                wp_enqueue_script( 'jquery-timeago-' . $language . '-js', $this->plugin_url . '/js/' . $translationFile, array( 'jquery-timeago-js' ) );
-            }
-
             wp_enqueue_script( 'myfossil-bp-activity-refresh-ajax-js', $this->plugin_url . '/js/refresh.js', array( 'jquery' ) );
 
-
             // adding JavaScript Refresh Rate to html head
-            add_action( 'wp_head', array( &$this, 'addJavaScriptRefreshRate' ) );
+            add_action( 'wp_head', array( $this, 'addJavaScriptRefreshRate' ) );
 
             // add method ajaxRefresh to action hook wp_ajax_myfossil_bp_activity_refresh
-            add_action( 'wp_ajax_myfossil_bp_activity_refresh', array( &$this, 'ajaxRefresh' ) );
+            add_action( 'wp_ajax_myfossil_bp_activity_refresh', array( $this, 'ajaxRefresh' ) );
         }
 
-        add_action( 'admin_menu', array( &$this, 'addAdminMenu' ) );
-        add_filter( 'plugin_action_links', array( &$this, 'addPluginActionLink' ), 10, 2 );
-
+        add_action( 'admin_menu', array( $this, 'addAdminMenu' ) );
+        add_filter( 'plugin_action_links', array( $this, 'addPluginActionLink' ), 10, 2 );
         add_filter( 'bp_activity_time_since', array( $this, 'replaceActivityTimeSince' ), 10, 2 );
         add_filter( 'bp_activity_get_comments', array( $this, 'getComments' ) );
-
         add_filter( 'bp_activity_allowed_tags', array( $this, 'updateAllowedTags' ) );
     } // function init()
 
@@ -155,7 +132,7 @@ class myFOSSILBuddypressActivityRefresh
      * Updating allowed tags
      *
      * @param unknown $allowedTags
-     * @return unknown
+     * @return array
      */
     public function updateAllowedTags( $allowedTags )
     {
@@ -255,7 +232,7 @@ class myFOSSILBuddypressActivityRefresh
     {
         global $bp, $activities_template;
 
-        $inGroup = !empty( $bp->groups->current_group );
+        $inGroup = ! empty( $bp->groups->current_group );
 
         // get last id
         if ( isset( $_POST['last_id'] ) && is_numeric( $_POST['last_id'] ) ) {
@@ -263,7 +240,7 @@ class myFOSSILBuddypressActivityRefresh
 
             // start the Loop
             // show new comments in stream format
-            if ( bp_has_activities( bp_ajax_querystring( 'activity' )  . '&display_comments=stream' ) ) {
+            if ( bp_has_activities( bp_ajax_querystring( 'activity' ) ) ) {
                 $activities = $activities_template->activities;
 
                 foreach ( $activities as $activity ) {
@@ -274,7 +251,7 @@ class myFOSSILBuddypressActivityRefresh
                     if ( $inGroup ) {
                         if ( bp_get_activity_id() > $last_id ) {
                             // print the entry
-                            include locate_template( array( 'activity/entry.php' ), false );
+                            bp_get_template_part('activity/entry');
                         }
                         else if ( !empty( $activities_template->activity->children ) ) {
                                 $activities_template->activity_parents[$activity->id] = $activity;
@@ -285,7 +262,7 @@ class myFOSSILBuddypressActivityRefresh
                         // if the current id is less than last_id, break the while
                         if ( bp_get_activity_id() > $last_id ) {
                             // print the entry
-                            include locate_template( array( 'activity/entry.php' ), false );
+                            bp_get_template_part('activity/entry');
                         }
                     }
                 }
@@ -329,7 +306,7 @@ class myFOSSILBuddypressActivityRefresh
             'Activity Refresh',
             'manage_options',
             basename( __FILE__ ),
-            array( &$this, 'printAdminPage' )
+            array( $this, 'printAdminPage' )
         );
     } // end function addAdminMenu()
 

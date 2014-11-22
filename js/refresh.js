@@ -31,8 +31,6 @@ function myFOSSILBpAtivityRefresh_loadNewActivities() {
             'filter': filter
         },
         function(response) {
-            console.info(response);
-
             // Check for errors and append if found.
             if (response[0] + response[1] != '-1' && response.length > 0) {
                 // add response to hidden field
