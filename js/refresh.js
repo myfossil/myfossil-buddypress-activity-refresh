@@ -1,7 +1,7 @@
 var	new_activities = 0;
 var original_page_title = '';
 
-function rsBpAtivityRefresh_getLastId()
+function myFOSSILBpAtivityRefresh_getLastId()
 {
 	// get highest ID for the request
 	last_id = 0;
@@ -24,15 +24,15 @@ function rsBpAtivityRefresh_getLastId()
 	return last_id;	
 }
 
-function rsBpAtivityRefresh_loadNewActivities()
+function myFOSSILBpAtivityRefresh_loadNewActivities()
 {
 	scope = jQuery.cookie( 'bp-activity-scope');
 	filter = jQuery.cookie( 'bp-activity-filter');
-	last_id = rsBpAtivityRefresh_getLastId();
+	last_id = myFOSSILBpAtivityRefresh_getLastId();
 
 	jQuery.post( ajaxurl,
 	{
-		action: 'rs_bp_activity_refresh',
+		action: 'myfossil_bp_activity_refresh',
 		'last_id': last_id,
 		'scope': scope,
 		'filter': filter
@@ -45,13 +45,13 @@ function rsBpAtivityRefresh_loadNewActivities()
 		if ( response[0] + response[1] != '-1' && response.length > 0)
 		{
 			// add response to hidden field
-			jQuery('#rs-hidden-response').html(response);
+			jQuery('#myfossil-hidden-response').html(response);
 
 			// reset last_insert_id
 			last_insert_li = false;
 
 			// check each list item
-			jQuery('#rs-hidden-response').children('li').each(function()
+			jQuery('#myfossil-hidden-response').children('li').each(function()
 			{
 				objectId = jQuery(this).attr('id');
 				objectId = objectId.substring(objectId.indexOf('-') + 1);
@@ -75,20 +75,20 @@ function rsBpAtivityRefresh_loadNewActivities()
 			});
 
 			// clear hidden field
-			jQuery('#rs-hidden-response').html('');
+			jQuery('#myfossil-hidden-response').html('');
 		}
 	});
 }
 
-function rsBpAtivityRefresh_automaticRefresh()
+function myFOSSILBpAtivityRefresh_automaticRefresh()
 {
-	rsBpAtivityRefresh_loadNewActivities();
-	if (rsBpActivityRefreshTimeago)
+	myFOSSILBpAtivityRefresh_loadNewActivities();
+	if (myFOSSILBpActivityRefreshTimeago)
 	{
 		jQuery('span.timeago').timeago();
 	}
 	// reset time and start function again
-	setTimeout( 'rsBpAtivityRefresh_automaticRefresh();' , rsBpActivityRefreshRate * 1000 );
+	setTimeout( 'myFOSSILBpAtivityRefresh_automaticRefresh();' , myFOSSILBpActivityRefreshRate * 1000 );
 }
 
 jQuery(document).ready(function()
@@ -97,18 +97,18 @@ jQuery(document).ready(function()
 	if (jQuery('ul.activity-list').length > 0 && !jQuery('body').hasClass('activity-permalink'))
 	{
 		// create hidden field
-		jQuery('body').append('<div id="rs-hidden-response" style="display: none;"></div>');
+		jQuery('body').append('<div id="myfossil-hidden-response" style="display: none;"></div>');
 
-		if (typeof rsBpActivityRefreshRate == "undefined")
+		if (typeof myFOSSILBpActivityRefreshRate == "undefined")
 		{
-			rsBpActivityRefreshRate = 10;
+			myFOSSILBpActivityRefreshRate = 10;
 		}
-		if (rsBpActivityRefreshTimeago)
+		if (myFOSSILBpActivityRefreshTimeago)
 		{
 			jQuery('span.timeago').timeago();
 		}
 		// start refreshing
-		setTimeout( 'rsBpAtivityRefresh_automaticRefresh();' , rsBpActivityRefreshRate * 1000 );
+		setTimeout( 'myFOSSILBpAtivityRefresh_automaticRefresh();' , myFOSSILBpActivityRefreshRate * 1000 );
 	}
 
 	jQuery('div.activity-type-tabs').click( function(event) {

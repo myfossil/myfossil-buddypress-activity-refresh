@@ -1,26 +1,17 @@
 <?php
 /*
-Plugin Name: RS Buddypress Activity Refresh
-PLugin URI: http://buddypress.org/community/groups/rs-buddypress-activity-refresh/
-Description: This plugin automatically refresh the Buddypress activity stream
-Author: Florian Koenig-Heidinger
-Requires at least: 2.9.1 / 1.2.4
-Tested up to: 3.8 / 1.8.1
+Plugin Name: myFOSSIL BuddyPress Activity Refresh
+PLugin URI: http://buddypress.org/community/groups/myfossil-buddypress-activity-refresh/
+Description: This plugin automatically refresh the BuddyPress Activity stream, it is a fork of the RS BuddyPress Activity Refresh plugin that works with newer versions of BuddyPress.
+Author: Florian Koenig-Heidinger, Brandon Wood
 Tags: buddypress
-Version: 1.8
 Author URI: http://buddypress.org/community/members/Spitzohr/
-
-Update 1.8: Update jquery timeago plugin
-Update 1.6: Language support for the jquery timeago plugin
-Update 1.5: Plugin should work with Buddypress 1.5 again
-Update 1.1.4: Reset document title if Activity List is refreshed
-Update 1.1.3: Move Admin Page from Settings to BuddyPress
 */
 
 /**
- * class rsBuddypressActivityRefresh
+ * class myFOSSILBuddypressActivityRefresh
  */
-class rsBuddypressActivityRefresh
+class myFOSSILBuddypressActivityRefresh
 {
 	/**
 	 * Plugin Folder
@@ -77,7 +68,7 @@ class rsBuddypressActivityRefresh
 	 * @access protected
 	 * @var string
 	 */
-	protected $adminOptionsName = 'rsBuddypressActivityRefresh';
+	protected $adminOptionsName = 'myFOSSILBuddypressActivityRefresh';
 
 	/**
 	 * Options array
@@ -106,7 +97,7 @@ class rsBuddypressActivityRefresh
 		$this->plugin_dir = WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . $this->plugin_folder;
 		$this->plugin_file = $this->plugin_folder . '/' . basename(__FILE__);
 
-		load_plugin_textdomain('rs-buddypress-activity-refresh', null, dirname(plugin_basename( __FILE__ )) . '/languages');
+		load_plugin_textdomain('myfossil-buddypress-activity-refresh', null, dirname(plugin_basename( __FILE__ )) . '/languages');
 
 		// load Options
 		$this->getOptions();
@@ -123,14 +114,14 @@ class rsBuddypressActivityRefresh
 				wp_enqueue_script( 'jquery-timeago-' . $language . '-js', $this->plugin_url . '/js/' . $translationFile, array( 'jquery-timeago-js' ) );
 			}
 
-			wp_enqueue_script( 'rs-bp-activity-refresh-ajax-js', $this->plugin_url . '/js/refresh.js', array( 'jquery' ) );
+			wp_enqueue_script( 'myfossil-bp-activity-refresh-ajax-js', $this->plugin_url . '/js/refresh.js', array( 'jquery' ) );
 			
 
 			// adding JavaScript Refresh Rate to html head
 			add_action( 'wp_head', array(&$this, 'addJavaScriptRefreshRate'));
 
-			// add method ajaxRefresh to action hook wp_ajax_rs_bp_activity_refresh
-			add_action('wp_ajax_rs_bp_activity_refresh', array(&$this, 'ajaxRefresh'));
+			// add method ajaxRefresh to action hook wp_ajax_myfossil_bp_activity_refresh
+			add_action('wp_ajax_myfossil_bp_activity_refresh', array(&$this, 'ajaxRefresh'));
 		}
 
 		add_action('admin_menu', array(&$this, 'addAdminMenu'));
@@ -223,21 +214,21 @@ class rsBuddypressActivityRefresh
 	public function addJavaScriptRefreshRate()
 	{
 		echo '<script type="text/javascript">' . "\n";
-		echo 'var rsBpActivityRefreshRate = ' . $this->options['refreshRate'] . ';' . "\n";
+		echo 'var myFOSSILBpActivityRefreshRate = ' . $this->options['refreshRate'] . ';' . "\n";
 		if ($this->options['timeFormat'] == 'since')
 		{
-			echo 'var rsBpActivityRefreshTimeago = true;' . "\n";
+			echo 'var myFOSSILBpActivityRefreshTimeago = true;' . "\n";
 			echo 'jQuery.timeago.settings.refreshMillis = 0;' . "\n";
 		}
 		else
 		{
-			echo 'var rsBpActivityRefreshTimeago = false;' . "\n";
+			echo 'var myFOSSILBpActivityRefreshTimeago = false;' . "\n";
 		}
 		echo '</script>' . "\n";
 	}
 /**
 	 * method to answer the ajax request
-	 * action hook: wp_ajax_rs_bp_activity_refresh
+	 * action hook: wp_ajax_myfossil_bp_activity_refresh
 	 * @access public
 	 */
 	public function ajaxRefresh()
@@ -338,40 +329,40 @@ class rsBuddypressActivityRefresh
 			wp_die( __('You do not have sufficient permissions to access this page.') );
 		}
 										
-		if (isset($_POST['update_rsbpactivityrefresh']))
+		if (isset($_POST['update_myfossilbpactivityrefresh']))
 		{
-			if (isset($_POST['rsbpactivityrefresh_refreshrate']))
+			if (isset($_POST['myfossilbpactivityrefresh_refreshrate']))
 			{
-				$options['refreshRate'] = $_POST['rsbpactivityrefresh_refreshrate'];
+				$options['refreshRate'] = $_POST['myfossilbpactivityrefresh_refreshrate'];
 			}	
-			if (isset($_POST['rsbpactivityrefresh_timeformat']) && in_array($_POST['rsbpactivityrefresh_timeformat'], $this->allowedValuesTimeFormat))
+			if (isset($_POST['myfossilbpactivityrefresh_timeformat']) && in_array($_POST['myfossilbpactivityrefresh_timeformat'], $this->allowedValuesTimeFormat))
 			{
-				$options['timeFormat'] = $_POST['rsbpactivityrefresh_timeformat'];
+				$options['timeFormat'] = $_POST['myfossilbpactivityrefresh_timeformat'];
 			}	
 			$this->saveOptions($options);
 			?>
-				<div class="updated"><p><strong><?php _e('Settings Updated.', 'rs-buddypress-activity-refresh');?></strong></p></div>
+				<div class="updated"><p><strong><?php _e('Settings Updated.', 'myfossil-buddypress-activity-refresh');?></strong></p></div>
 			<?php
 		}
 
 		?>
 			<div class="wrap">
 				<form method="post" action="">
-					<h2>RS Buddypress Activity Refresh</h2>
+					<h2>myFOSSIL Buddypress Activity Refresh</h2>
 
-					<h3><?php _e('Refresh Rate', 'rs-buddypress-activity-refresh'); ?></h3>
-					<p><?php printf( __('This value is the refresh rate in seconds. Default value is %d. If you set this value to 0, the refresh is disabled.', 'rs-buddypress-activity-refresh'), $this->defaultRefreshRate); ?>
-					<p><label for="rsbpactivityrefresh_refreshrate"><input type="text" id="rsbpactivityrefresh_refreshrate" name="rsbpactivityrefresh_refreshrate" value="<?php echo $this->options['refreshRate']; ?>" /> <?php _e('seconds', 'rs-buddypress-activity-refresh'); ?></label></p>
+					<h3><?php _e('Refresh Rate', 'myfossil-buddypress-activity-refresh'); ?></h3>
+					<p><?php printf( __('This value is the refresh rate in seconds. Default value is %d. If you set this value to 0, the refresh is disabled.', 'myfossil-buddypress-activity-refresh'), $this->defaultRefreshRate); ?>
+					<p><label for="myfossilbpactivityrefresh_refreshrate"><input type="text" id="myfossilbpactivityrefresh_refreshrate" name="myfossilbpactivityrefresh_refreshrate" value="<?php echo $this->options['refreshRate']; ?>" /> <?php _e('seconds', 'myfossil-buddypress-activity-refresh'); ?></label></p>
 
-					<h3><?php _e('Time Format', 'rs-buddypress-activity-refresh'); ?></h3>
-					<p><?php printf( __('Choose between the the <em>%s</em>-format: <strong>5 minutes ago</strong> and the <em>%s</em>-format: <strong>%s</strong>', 'rs-buddypress-activity-refresh'), __('Since', 'rs-buddypress-activity-refresh'), __('DateTime', 'rs-buddypress-activity-refresh'), $this->getFormattedDateTime(date('d-m-y H:i:s', time() - 5 * 60))); ?>
-					<p><label for="rsbpactivityrefresh_timeformat"><select id="rsbpactivityrefresh_timeformat" name="rsbpactivityrefresh_timeformat">
-						<option value="since"<?php if ($this->options['timeFormat'] == 'since') echo ' selected="selected"'; ?>><?php _e('Since', 'rs-buddypress-activity-refresh'); ?></option>
-						<option value="datetime"<?php if ($this->options['timeFormat'] == 'datetime') echo ' selected="selected"'; ?>><?php _e('DateTime', 'rs-buddypress-activity-refresh'); ?></option>
+					<h3><?php _e('Time Format', 'myfossil-buddypress-activity-refresh'); ?></h3>
+					<p><?php printf( __('Choose between the the <em>%s</em>-format: <strong>5 minutes ago</strong> and the <em>%s</em>-format: <strong>%s</strong>', 'myfossil-buddypress-activity-refresh'), __('Since', 'myfossil-buddypress-activity-refresh'), __('DateTime', 'myfossil-buddypress-activity-refresh'), $this->getFormattedDateTime(date('d-m-y H:i:s', time() - 5 * 60))); ?>
+					<p><label for="myfossilbpactivityrefresh_timeformat"><select id="myfossilbpactivityrefresh_timeformat" name="myfossilbpactivityrefresh_timeformat">
+						<option value="since"<?php if ($this->options['timeFormat'] == 'since') echo ' selected="selected"'; ?>><?php _e('Since', 'myfossil-buddypress-activity-refresh'); ?></option>
+						<option value="datetime"<?php if ($this->options['timeFormat'] == 'datetime') echo ' selected="selected"'; ?>><?php _e('DateTime', 'myfossil-buddypress-activity-refresh'); ?></option>
 					</select></p>
 
 					<div class="submit">
-						<input type="submit" name="update_rsbpactivityrefresh" value="<?php _e('Update Settings', 'rs-buddypress-activity-refresh'); ?>" />
+						<input type="submit" name="update_myfossilbpactivityrefresh" value="<?php _e('Update Settings', 'myfossil-buddypress-activity-refresh'); ?>" />
 					</div>
 				</form>
  			</div>
@@ -392,7 +383,7 @@ class rsBuddypressActivityRefresh
 		{
 			return $links;
 		}
-		$settings_link = '<a href="' . admin_url('admin.php?page=' . basename(__FILE__)) . '">' . __( 'Settings', 'rs-buddypress-activity-refresh' ) . '</a>';
+		$settings_link = '<a href="' . admin_url('admin.php?page=' . basename(__FILE__)) . '">' . __( 'Settings', 'myfossil-buddypress-activity-refresh' ) . '</a>';
 
 		array_unshift( $links, $settings_link );
 		return $links;
@@ -489,18 +480,18 @@ class rsBuddypressActivityRefresh
 		return $content;
 	} // recursiveComments()
 	
-} // class rsBuddypressActivityRefresh
+} // class myFOSSILBuddypressActivityRefresh
 
 /**
- * rsBuddypressActivityRefreshInit()
+ * myFOSSILBuddypressActivityRefreshInit()
  *
  * Only load the plugin code if BuddyPress is activated.
  */
-function rsBuddypressActivityRefreshInit()
+function myFOSSILBuddypressActivityRefreshInit()
 {
-	$rsBuddypressActivityRefresh = new rsBuddypressActivityRefresh();
-	$rsBuddypressActivityRefresh->init();
+	$myFOSSILBuddypressActivityRefresh = new myFOSSILBuddypressActivityRefresh();
+	$myFOSSILBuddypressActivityRefresh->init();
 }
-add_action('init', 'rsBuddypressActivityRefreshInit');
+add_action('init', 'myFOSSILBuddypressActivityRefreshInit');
 
 ?>
