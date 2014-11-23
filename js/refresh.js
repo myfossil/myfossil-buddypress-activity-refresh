@@ -20,9 +20,9 @@ function myFOSSILBpAtivityRefresh_getLastId() {
 }
 
 function myFOSSILBpAtivityRefresh_loadNewActivities() {
-    scope = jQuery.cookie('bp-activity-scope');
-    filter = jQuery.cookie('bp-activity-filter');
-    last_id = myFOSSILBpAtivityRefresh_getLastId();
+    var scope = jQuery.cookie('bp-activity-scope');
+    var filter = jQuery.cookie('bp-activity-filter');
+    var last_id = myFOSSILBpAtivityRefresh_getLastId();
 
     jQuery.post(ajaxurl, {
             action: 'myfossil_bp_activity_refresh',

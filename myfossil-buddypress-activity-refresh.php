@@ -2,7 +2,7 @@
 /*
 Plugin Name: myFOSSIL BuddyPress Activity Refresh
 Description: This plugin automatically refreshes the BuddyPress Activity stream.
-Author: myFOSSIL
+Author: Florian Koenig-Heidinger, forked and updated by Brandon Wood
 Tags: buddypress
 Version: 0.0.2
 */
